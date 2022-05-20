@@ -1,0 +1,52 @@
+/* Query 1 */
+select DISTINCT customer.Country,count(Album.Title) as albums
+from customer 
+join invoice
+on customer.CustomerId=Invoice.CustomerId
+join invoiceline
+on Invoice.InvoiceId = InvoiceLine.InvoiceId
+join track
+on InvoiceLine.trackid = track.TrackId
+join Album
+on track.AlbumId=album.AlbumId
+group by Customer.Country
+order by 2 desc 
+
+/* Query 2 */
+select customer.Country,genre.Name as genre_name,count(genre.genreid) as Number_of_times_genre_is_used
+
+from customer 
+join invoice
+on customer.CustomerId=Invoice.CustomerId
+join invoiceline
+on Invoice.InvoiceId = InvoiceLine.InvoiceId
+join track
+on InvoiceLine.trackid = track.TrackId
+join Genre
+on track.genreId=genre.GenreId
+where customer.country = 'USA'
+group by genre.name
+order by 3 desc;
+
+/* Query 3 */
+select Customer.FirstName,Customer.LastName,sum(Invoice.Total) as Total_invoices_dollars
+from Invoice
+join Customer
+on Customer.CustomerId = Invoice.CustomerId
+group by Customer.FirstName,Customer.LastName
+ORDER by 3 DESC
+limit 10;
+
+/* Query 4 */
+select artist.ArtistId,artist.Name,count(track.Name) as songs
+from Album 
+join Artist 
+on Album.ArtistId = Artist.ArtistId
+join Track
+on album.AlbumId = track.AlbumId
+join Genre
+on track.GenreId = Genre.GenreId
+where genre.Name = 'Rock'
+group by artist.name
+order by 3 desc
+limit 10;
